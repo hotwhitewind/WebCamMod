@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using AForge.Video.DirectShow;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,18 +18,47 @@ namespace WebCamMod
         private string _audioFilePath;
         private WaveOutEvent _waveOut;
         private Mp3FileReader _mp3Reader;
-
+        private VideoCaptureDevice _device;
 
         public Form1()
         {
             InitializeComponent();
+            cmbVideoSourceDeviceSelected.DataSource = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            cmbVideoSourceDeviceSelected.SelectedIndex = 0;
+            cmbVideoSourceDeviceSelected.DisplayMember = "Name";
+            _device = null;
+            if (cmbVideoSourceDeviceSelected.Items.Count > 0)
+            {
+                var filter = cmbVideoSourceDeviceSelected.SelectedItem as FilterInfo;
+                _device = new VideoCaptureDevice(filter.MonikerString);
+                foreach (var cap in _device.VideoCapabilities)
+                {
+                    cmbVideoCapabilities.Items.Add($"{cap.FrameSize.Width}X{cap.FrameSize.Height}");
+                }
+                cmbVideoCapabilities.SelectedIndex = 0;
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(_audioFilePath))
+            //if (!string.IsNullOrEmpty(_audioFilePath))
+            //{
+            //    PlayAudioFile(_audioFilePath);
+            //}
+            if (_device != null)
             {
-                PlayAudioFile(_audioFilePath);
+                VideoPlayForm playForm = new VideoPlayForm();
+                _device.VideoResolution = _device.VideoCapabilities[cmbVideoCapabilities.SelectedIndex];
+                playForm.Device = _device;
+                playForm.IsPlayerForFileVisible = false;
+                playForm.IsPlayerForWebCamIsVisible = true;
+                if (!string.IsNullOrEmpty(_initVideoFilePath))
+                {
+                    playForm.InitVideoFilePath = _initVideoFilePath;
+                    playForm.IsPlayerForFileVisible = true;
+                    playForm.IsPlayerForWebCamIsVisible = false;
+                }
+                playForm.ShowDialog();
             }
         }
 
