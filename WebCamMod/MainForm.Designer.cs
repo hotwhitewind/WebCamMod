@@ -84,6 +84,7 @@
             this.btnInitVideoFilePathOpen.TabIndex = 2;
             this.btnInitVideoFilePathOpen.Text = "...";
             this.btnInitVideoFilePathOpen.UseVisualStyleBackColor = true;
+            this.btnInitVideoFilePathOpen.Click += new System.EventHandler(this.btnInitVideoFilePathOpen_Click);
             // 
             // label2
             // 
@@ -109,6 +110,7 @@
             this.btnAudioFilePathOpen.TabIndex = 5;
             this.btnAudioFilePathOpen.Text = "...";
             this.btnAudioFilePathOpen.UseVisualStyleBackColor = true;
+            this.btnAudioFilePathOpen.Click += new System.EventHandler(this.btnAudioFilePathOpen_Click);
             // 
             // label3
             // 
@@ -195,6 +197,7 @@
             this.btnStart.TabIndex = 11;
             this.btnStart.Text = "Старт";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // cmbFilter1
             // 
