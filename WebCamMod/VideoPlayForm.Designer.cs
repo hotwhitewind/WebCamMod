@@ -44,6 +44,7 @@
             this.videoSourcePlayerWebCam.Text = "videoSourcePlayerWebCam";
             this.videoSourcePlayerWebCam.VideoSource = null;
             this.videoSourcePlayerWebCam.Visible = false;
+            this.videoSourcePlayerWebCam.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler(this.videoSourcePlayerWebCam_NewFrame);
             // 
             // axWindowsMediaPlayer
             // 
@@ -63,11 +64,14 @@
             this.Controls.Add(this.axWindowsMediaPlayer);
             this.Controls.Add(this.videoSourcePlayerWebCam);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "VideoPlayForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VideoPlayForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.VideoPlayForm_FormClosed);
             this.Shown += new System.EventHandler(this.VideoPlayForm_Shown);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VideoPlayForm_PreviewKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
             this.ResumeLayout(false);
 

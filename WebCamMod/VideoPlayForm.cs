@@ -1,4 +1,6 @@
-﻿using AForge.Controls;
+﻿using AForge;
+using AForge.Controls;
+using AForge.Imaging.Filters;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using System;
@@ -25,11 +27,48 @@ namespace WebCamMod
 
         delegate void ChangeVisibleDelegate();
 
+        public bool IsChangeFilter { get; set; }
+
+        public List<FiltersFactory.IFilter> FilterList { get; set; }
+
+        public int TimeFilter { get; set; }
+
+        public string AudioFilePath { get; set; }
+
+        private LevelsLinear levelLinear = new LevelsLinear();
+        private BrightnessCorrection brightnessCorrection = new BrightnessCorrection();
+        private Invert invert = new Invert();
+        private Timer _timer;
+        private int _filterIndex;
+        private int _maxFilter;
+        private FiltersFactory.IFilter _audioFilter;
+
         public VideoPlayForm()
         {
             InitializeComponent();
             InitVideoFilePath = string.Empty;
             axWindowsMediaPlayer.PlayStateChange += AxWindowsMediaPlayer_PlayStateChange;
+            brightnessCorrection.AdjustValue = 100;
+            levelLinear.InRed = new IntRange(30, 230);
+            levelLinear.InGreen = new IntRange(50, 240);
+            levelLinear.InBlue = new IntRange(10, 210);
+            _timer = new Timer();
+            _timer.Tick += _timer_Tick;
+            _filterIndex = 0;
+            _audioFilter = null;
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            _filterIndex++;
+            if (_filterIndex == _maxFilter)
+            {
+                _timer.Stop();
+                if (_audioFilter != null)
+                {
+                    _audioFilter.StopAudio();
+                }
+            }
         }
 
         private void AxWindowsMediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
@@ -42,6 +81,7 @@ namespace WebCamMod
             {
                 ChangeVisibleForPlayFile();
                 ChangeVisibleForPlayWeb();
+                _timer.Start();
             }
         }
 
@@ -49,7 +89,10 @@ namespace WebCamMod
         {
             videoSourcePlayerWebCam.Visible = IsPlayerForWebCamIsVisible;
             axWindowsMediaPlayer.Visible = IsPlayerForFileVisible;
-
+            _maxFilter = FilterList.Count;
+            _filterIndex = 0;
+            _timer.Interval = TimeFilter * 1000;
+            _audioFilter = null;
             VideoCaptureDevice videoSource = Device;
             OpenVideoSource(videoSourcePlayerWebCam, videoSource);
             if (!string.IsNullOrEmpty(InitVideoFilePath))
@@ -57,6 +100,10 @@ namespace WebCamMod
                 axWindowsMediaPlayer.URL = InitVideoFilePath;
                 axWindowsMediaPlayer.Ctlcontrols.play();
                 axWindowsMediaPlayer.Ctlenabled = false;
+            }
+            else
+            {
+                _timer.Start();
             }
         }
 
@@ -125,9 +172,66 @@ namespace WebCamMod
             }
         }
 
-        private void videoSourcePlayer_NewFrame(object sender, ref Bitmap image)
+        private void videoSourcePlayerWebCam_NewFrame(object sender, ref Bitmap image)
         {
+            if (_filterIndex < _maxFilter)
+            {
+                if (IsChangeFilter)
+                {
+                    if (FilterList[_filterIndex].IsAudio())
+                    {
+                        if (_audioFilter == null && !string.IsNullOrEmpty(AudioFilePath))
+                        {
+                            _audioFilter = FilterList[_filterIndex];
+                            FilterList[_filterIndex].PlayAudio(AudioFilePath);
+                        }
+                    }
+                    else
+                    {
+                        if(_audioFilter != null)
+                        {
+                            _audioFilter.StopAudio();
+                        }
+                        var filteredImage = FilterList[_filterIndex].GetNewFrame(image);
+                        image = filteredImage;
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i < _filterIndex + 1; i++)
+                    {
+                        if (FilterList[i].IsAudio())
+                        {
+                            if (_audioFilter == null && !string.IsNullOrEmpty(AudioFilePath))
+                            {
+                                _audioFilter = FilterList[i];
+                                FilterList[i].PlayAudio(AudioFilePath);
+                            }
+                        }
+                        else
+                        {
+                            image = FilterList[i].GetNewFrame(image);
+                        }
+                    }
+                }
+            }
+        }
 
+        private void VideoPlayForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if(e.KeyCode == Keys.F1)
+            {
+                Close();
+            }
+        }
+
+        private void VideoPlayForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _timer.Stop();
+            if (_audioFilter != null)
+            {
+                _audioFilter.StopAudio();
+            }
         }
     }
 }

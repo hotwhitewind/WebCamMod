@@ -67,6 +67,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FiltersFactory\AudioFilter.cs" />
+    <Compile Include="FiltersFactory\GrayScaleFilter.cs" />
+    <Compile Include="FiltersFactory\IFilter.cs" />
+    <Compile Include="FiltersFactory\InvertionFilter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
