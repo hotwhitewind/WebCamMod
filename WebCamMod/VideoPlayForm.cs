@@ -228,10 +228,12 @@ namespace WebCamMod
         private void VideoPlayForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             _timer.Stop();
+            _timer.Dispose();
             if (_audioFilter != null)
             {
                 _audioFilter.StopAudio();
             }
+            CloseCurrentVideoSource(videoSourcePlayerWebCam);
         }
     }
 }

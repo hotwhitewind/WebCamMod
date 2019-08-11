@@ -68,9 +68,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FiltersFactory\AudioFilter.cs" />
+    <Compile Include="FiltersFactory\BrightnessCorrectionFilter.cs" />
+    <Compile Include="FiltersFactory\ColorFilteringFilter.cs" />
+    <Compile Include="FiltersFactory\ContrastCorrectionFilter.cs" />
+    <Compile Include="FiltersFactory\ConvolutionFilter.cs" />
+    <Compile Include="FiltersFactory\DifferenceEdgeDetectorFilter.cs" />
+    <Compile Include="FiltersFactory\FloydSteinbergDitheringFilter.cs" />
+    <Compile Include="FiltersFactory\GaussianBlurFilter.cs" />
     <Compile Include="FiltersFactory\GrayScaleFilter.cs" />
+    <Compile Include="FiltersFactory\HomogenityEdgeDetectorFilter.cs" />
+    <Compile Include="FiltersFactory\HSLFilteringFilter.cs" />
+    <Compile Include="FiltersFactory\HueModifierFilter.cs" />
     <Compile Include="FiltersFactory\IFilter.cs" />
     <Compile Include="FiltersFactory\InvertionFilter.cs" />
+    <Compile Include="FiltersFactory\JitterFilter.cs" />
+    <Compile Include="FiltersFactory\LevelsLinearFilter.cs" />
+    <Compile Include="FiltersFactory\OilPaintingFilter.cs" />
+    <Compile Include="FiltersFactory\OrderedDitheringFilter.cs" />
+    <Compile Include="FiltersFactory\RotateChannelsFilter.cs" />
+    <Compile Include="FiltersFactory\SaturationCorrectionFilter.cs" />
+    <Compile Include="FiltersFactory\SepiaFilter.cs" />
+    <Compile Include="FiltersFactory\SharpenFilter.cs" />
+    <Compile Include="FiltersFactory\SobelEdgeDetectorFilter.cs" />
+    <Compile Include="FiltersFactory\TexturerFilter.cs" />
+    <Compile Include="FiltersFactory\ThresholdFilter.cs" />
+    <Compile Include="FiltersFactory\YCbCrFilteringFilter.cs" />
+    <Compile Include="FiltersFactory\YCbCrLinearFilter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
