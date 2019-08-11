@@ -21,7 +21,7 @@ namespace WebCamMod.FiltersFactory
             //Grayscale.CommonAlgorithms.BT709.GreenCoefficient
             //Grayscale.CommonAlgorithms.BT709.RedCoefficient
 
-            var newFrame = Grayscale.CommonAlgorithms.BT709.Apply(source);
+            var newFrame = Grayscale.CommonAlgorithms.RMY.Apply(source);
             return newFrame;
         }
 

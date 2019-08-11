@@ -27,6 +27,9 @@ namespace WebCamMod
 
         delegate void ChangeVisibleDelegate();
 
+        delegate void ChangeVisibleDelegateForWeb(bool v);
+
+
         public bool IsChangeFilter { get; set; }
 
         public List<FiltersFactory.IFilter> FilterList { get; set; }
@@ -60,15 +63,16 @@ namespace WebCamMod
 
         private void _timer_Tick(object sender, EventArgs e)
         {
-            _filterIndex++;
-            if (_filterIndex == _maxFilter)
+            if(_filterIndex + 1 == _maxFilter)
             {
                 _timer.Stop();
                 if (_audioFilter != null)
                 {
                     _audioFilter.StopAudio();
                 }
+                ChangeVisibleForPlayWeb(false);
             }
+            _filterIndex++;
         }
 
         private void AxWindowsMediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
@@ -80,7 +84,7 @@ namespace WebCamMod
             if(axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsStopped)
             {
                 ChangeVisibleForPlayFile();
-                ChangeVisibleForPlayWeb();
+                ChangeVisibleForPlayWeb(true);
                 _timer.Start();
             }
         }
@@ -120,16 +124,16 @@ namespace WebCamMod
             }
         }
 
-        void ChangeVisibleForPlayWeb()
+        void ChangeVisibleForPlayWeb(bool visible)
         {
             if (videoSourcePlayerWebCam.InvokeRequired)
             {
-                var changeVis = new ChangeVisibleDelegate(ChangeVisibleForPlayWeb);
+                var changeVis = new ChangeVisibleDelegateForWeb(ChangeVisibleForPlayWeb);
                 videoSourcePlayerWebCam.Invoke(changeVis);
             }
             else
             {
-                videoSourcePlayerWebCam.Visible = true;
+                videoSourcePlayerWebCam.Visible = visible;
             }
         }
 
@@ -144,7 +148,6 @@ namespace WebCamMod
             // start new video source
             player.VideoSource = source;
             player.Start();
-
             this.Cursor = Cursors.Default;
         }
 
@@ -192,26 +195,40 @@ namespace WebCamMod
                         {
                             _audioFilter.StopAudio();
                         }
-                        var filteredImage = FilterList[_filterIndex].GetNewFrame(image);
-                        image = filteredImage;
+                        try
+                        {
+                            var filteredImage = FilterList[_filterIndex].GetNewFrame(image);
+                            image = filteredImage;
+                        }
+                        catch(Exception)
+                        {
+                        }
                     }
                 }
                 else
                 {
                     for(int i = 0; i < _filterIndex + 1; i++)
                     {
-                        if (FilterList[i].IsAudio())
+                        try
                         {
-                            if (_audioFilter == null && !string.IsNullOrEmpty(AudioFilePath))
+                            if (i < _maxFilter)
                             {
-                                _audioFilter = FilterList[i];
-                                FilterList[i].PlayAudio(AudioFilePath);
+                                if (FilterList[i].IsAudio())
+                                {
+                                    if (_audioFilter == null && !string.IsNullOrEmpty(AudioFilePath))
+                                    {
+                                        _audioFilter = FilterList[i];
+                                        FilterList[i].PlayAudio(AudioFilePath);
+                                    }
+                                }
+                                else
+                                {
+                                    image = FilterList[i].GetNewFrame(image);
+                                }
                             }
                         }
-                        else
-                        {
-                            image = FilterList[i].GetNewFrame(image);
-                        }
+                        catch (Exception)
+                        { }
                     }
                 }
             }

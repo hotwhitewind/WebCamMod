@@ -59,6 +59,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cmbVideoCapabilities = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudFilterInterval)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -363,11 +364,21 @@
             this.label13.TabIndex = 15;
             this.label13.Text = "Выберите разрешение устройства";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(12, 526);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(170, 13);
+            this.label14.TabIndex = 16;
+            this.label14.Text = "Остановка воспроизведения F1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(585, 520);
+            this.ClientSize = new System.Drawing.Size(585, 548);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.cmbVideoCapabilities);
             this.Controls.Add(this.label1);
@@ -428,6 +439,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbVideoCapabilities;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
     }
 }
 

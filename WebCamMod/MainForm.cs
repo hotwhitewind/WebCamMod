@@ -23,20 +23,28 @@ namespace WebCamMod
         public Form1()
         {
             InitializeComponent();
-            cmbVideoSourceDeviceSelected.DataSource = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            cmbVideoSourceDeviceSelected.SelectedIndex = 0;
-            cmbVideoSourceDeviceSelected.DisplayMember = "Name";
-            _device = null;
-            if (cmbVideoSourceDeviceSelected.Items.Count > 0)
+            try
             {
-                var filter = cmbVideoSourceDeviceSelected.SelectedItem as FilterInfo;
-                _device = new VideoCaptureDevice(filter.MonikerString);
-                foreach (var cap in _device.VideoCapabilities)
+                cmbVideoSourceDeviceSelected.DataSource = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                cmbVideoSourceDeviceSelected.SelectedIndex = 0;
+                cmbVideoSourceDeviceSelected.DisplayMember = "Name";
+                _device = null;
+                if (cmbVideoSourceDeviceSelected.Items.Count > 0)
                 {
-                    cmbVideoCapabilities.Items.Add($"{cap.FrameSize.Width}X{cap.FrameSize.Height}");
+                    var filter = cmbVideoSourceDeviceSelected.SelectedItem as FilterInfo;
+                    _device = new VideoCaptureDevice(filter.MonikerString);
+                    foreach (var cap in _device.VideoCapabilities)
+                    {
+                        cmbVideoCapabilities.Items.Add($"{cap.FrameSize.Width}X{cap.FrameSize.Height}");
+                    }
+                    cmbVideoCapabilities.SelectedIndex = 0;
                 }
-                cmbVideoCapabilities.SelectedIndex = 0;
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Ошибка определения устройств воспроизведения:{ex.Message}");
+            }
+
             try
             {
                 _allFilters = GetClassByType();
@@ -89,7 +97,6 @@ namespace WebCamMod
                 playForm.Device = _device;
                 playForm.IsPlayerForFileVisible = false;
                 playForm.IsPlayerForWebCamIsVisible = true;
-                //playForm.AllFilters = _allFilters;
                 playForm.IsChangeFilter = chkbxChangeNextFilter.Checked;
                 playForm.TimeFilter = Decimal.ToInt32(nudFilterInterval.Value);
 
