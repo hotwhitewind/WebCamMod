@@ -1,28 +1,25 @@
-﻿using System;
+﻿using AForge.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AForge.Imaging.Filters;
 
 namespace WebCamMod.FiltersFactory
 {
-    public class ColorFilteringFilter : IFilter
+    public class ErosionFilter : IFilter
     {
-        ColorFiltering _colorFiltering;
+        Erosion erosion;
 
-        public ColorFilteringFilter()
+        public ErosionFilter()
         {
-            _colorFiltering = new ColorFiltering();
-            _colorFiltering.Blue = new AForge.IntRange(25, 230);
-            _colorFiltering.Red = new AForge.IntRange(25, 230);
-            _colorFiltering.Green = new AForge.IntRange(25, 230);
+            erosion = new Erosion();
         }
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            var newFrame = _colorFiltering.Apply(source);
+            var newFrame = erosion.Apply(source);
             source.Dispose();
             return newFrame;
         }
@@ -34,7 +31,7 @@ namespace WebCamMod.FiltersFactory
 
         public string NameUnique()
         {
-            return "Color Filtering";
+            return "Erosion";
         }
 
         public void PlayAudio(string filePath)

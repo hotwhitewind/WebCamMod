@@ -22,7 +22,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return gaussianBlur.Apply(source);
+            var newFrame = gaussianBlur.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

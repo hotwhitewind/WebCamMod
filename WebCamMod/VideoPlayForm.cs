@@ -79,7 +79,7 @@ namespace WebCamMod
         {
             if(axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
-                axWindowsMediaPlayer.fullScreen = true;
+                //axWindowsMediaPlayer.fullScreen = true;
             }
             if(axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsStopped)
             {

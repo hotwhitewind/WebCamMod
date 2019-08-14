@@ -20,7 +20,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return saturationCorrection.Apply(source);
+            var newFrame = saturationCorrection.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

@@ -21,8 +21,11 @@ namespace WebCamMod.FiltersFactory
         public Bitmap GetNewFrame(Bitmap source)
         {
             // get grayscale image
-            source = Grayscale.CommonAlgorithms.RMY.Apply(source);
-            return threshold.Apply(source);
+            var source1 = Grayscale.CommonAlgorithms.RMY.Apply(source);
+            var newFrame = threshold.Apply(source1);
+            source.Dispose();
+            source1.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

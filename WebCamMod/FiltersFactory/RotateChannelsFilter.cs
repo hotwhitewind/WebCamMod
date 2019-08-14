@@ -19,7 +19,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return _rotateChannels.Apply(source);
+            var newFrame = _rotateChannels.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

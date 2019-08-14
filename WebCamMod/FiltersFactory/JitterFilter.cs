@@ -20,7 +20,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return jitter.Apply(source);
+            var newFrame = jitter.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

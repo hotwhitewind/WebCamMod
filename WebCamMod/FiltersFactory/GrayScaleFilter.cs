@@ -22,6 +22,7 @@ namespace WebCamMod.FiltersFactory
             //Grayscale.CommonAlgorithms.BT709.RedCoefficient
 
             var newFrame = Grayscale.CommonAlgorithms.RMY.Apply(source);
+            source.Dispose();
             return newFrame;
         }
 

@@ -15,12 +15,14 @@ namespace WebCamMod.FiltersFactory
         public ContrastCorrectionFilter()
         {
             contrastCorrection = new ContrastCorrection();
-            contrastCorrection.Factor = 100;
+            contrastCorrection.Factor = 150;
         }
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return contrastCorrection.Apply(source);
+            var newFrame = contrastCorrection.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

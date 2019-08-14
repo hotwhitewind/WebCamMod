@@ -15,12 +15,14 @@ namespace WebCamMod.FiltersFactory
         public BrightnessCorrectionFilter()
         {
             brightnessCorrection = new BrightnessCorrection();
-            brightnessCorrection.AdjustValue = 100;
+            brightnessCorrection.AdjustValue = 0;
         }
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return brightnessCorrection.Apply(source);
+            var newFrame = brightnessCorrection.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

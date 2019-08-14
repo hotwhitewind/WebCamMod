@@ -73,6 +73,8 @@
     <Compile Include="FiltersFactory\ContrastCorrectionFilter.cs" />
     <Compile Include="FiltersFactory\ConvolutionFilter.cs" />
     <Compile Include="FiltersFactory\DifferenceEdgeDetectorFilter.cs" />
+    <Compile Include="FiltersFactory\DilatationFilter.cs" />
+    <Compile Include="FiltersFactory\ErosionFilter.cs" />
     <Compile Include="FiltersFactory\FloydSteinbergDitheringFilter.cs" />
     <Compile Include="FiltersFactory\GaussianBlurFilter.cs" />
     <Compile Include="FiltersFactory\GrayScaleFilter.cs" />

@@ -21,7 +21,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return sharpen.Apply(source);
+            var newFrame = sharpen.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

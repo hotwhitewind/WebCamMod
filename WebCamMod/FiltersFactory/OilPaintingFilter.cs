@@ -20,7 +20,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return oilPainting.Apply(source);
+            var newFrame = oilPainting.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

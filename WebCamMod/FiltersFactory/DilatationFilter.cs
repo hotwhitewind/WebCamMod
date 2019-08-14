@@ -1,28 +1,25 @@
-﻿using System;
+﻿using AForge.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AForge.Imaging.Filters;
 
 namespace WebCamMod.FiltersFactory
 {
-    public class ColorFilteringFilter : IFilter
+    public class DilatationFilter : IFilter
     {
-        ColorFiltering _colorFiltering;
+        Dilatation dilatation;
 
-        public ColorFilteringFilter()
+        public DilatationFilter()
         {
-            _colorFiltering = new ColorFiltering();
-            _colorFiltering.Blue = new AForge.IntRange(25, 230);
-            _colorFiltering.Red = new AForge.IntRange(25, 230);
-            _colorFiltering.Green = new AForge.IntRange(25, 230);
+            dilatation = new Dilatation();
         }
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            var newFrame = _colorFiltering.Apply(source);
+            var newFrame = dilatation.Apply(source);
             source.Dispose();
             return newFrame;
         }
@@ -34,7 +31,7 @@ namespace WebCamMod.FiltersFactory
 
         public string NameUnique()
         {
-            return "Color Filtering";
+            return "Dilatation";
         }
 
         public void PlayAudio(string filePath)

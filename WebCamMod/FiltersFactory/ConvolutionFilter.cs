@@ -24,7 +24,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return convolution.Apply(source);
+            var newFrame = convolution.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

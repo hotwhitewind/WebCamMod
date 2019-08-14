@@ -20,7 +20,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return yCbCrFiltering.Apply(source);
+            var newFrame = yCbCrFiltering.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

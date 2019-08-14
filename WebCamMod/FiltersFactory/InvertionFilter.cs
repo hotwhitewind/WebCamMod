@@ -21,6 +21,7 @@ namespace WebCamMod.FiltersFactory
         {
             //инверсия
             var newFrame = _invert.Apply(source);
+            source.Dispose();
             return newFrame;
         }
 

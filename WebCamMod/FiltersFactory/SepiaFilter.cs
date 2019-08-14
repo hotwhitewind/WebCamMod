@@ -19,7 +19,9 @@ namespace WebCamMod.FiltersFactory
 
         public Bitmap GetNewFrame(Bitmap source)
         {
-            return _sepia.Apply(source);
+            var newFrame = _sepia.Apply(source);
+            source.Dispose();
+            return newFrame;
         }
 
         public bool IsAudio()

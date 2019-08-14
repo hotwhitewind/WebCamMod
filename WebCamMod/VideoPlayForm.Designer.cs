@@ -69,7 +69,6 @@
             this.Name = "VideoPlayForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VideoPlayForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.VideoPlayForm_FormClosed);
             this.Shown += new System.EventHandler(this.VideoPlayForm_Shown);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VideoPlayForm_PreviewKeyDown);
